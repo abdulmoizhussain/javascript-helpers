@@ -1,3 +1,4 @@
+// Call Fetch method with timeout functionality :)
 // Help taken from:
 // https://stackoverflow.com/questions/46946380/fetch-api-request-timeout
 // https://github.com/github/fetch/issues/175
@@ -5,10 +6,10 @@
 
 // https://modernweb.com/45-useful-javascript-tips-tricks-and-best-practices/
 
-// const fetch = require("node-fetch");
+const fetch = require("node-fetch");
 const AbortController = require("abort-controller");
 
-// Can NOT exclude timeout in this approach. Some value must be given or default will be provided.
+// Can NOT exclude timeout in this approach. Some timeout must be given or default will be provided.
 const defaultTimeout = 6000;
 const _timeoutWithoutAbort = (url, options = {}) => Promise.race([
   new Promise((_, reject) =>
