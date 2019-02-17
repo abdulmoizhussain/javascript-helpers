@@ -9,15 +9,25 @@
 const fetch = require("node-fetch");
 const AbortController = require("abort-controller");
 
+// Clearing a timeoutId is necessary coz Node does not leave terminal until a setTimeout() is called or cleared.
+
 // Can NOT exclude timeout in this approach. Some timeout must be given or default will be provided.
 const defaultTimeout = 6000;
-const _timeoutWithoutAbort = (url, options = {}) => Promise.race([
-  new Promise((_, reject) =>
-    setTimeout(() => reject(new Error("Request Timeout")),
-      "timeout" in options && options.timeout > 0 ? options.timeout : defaultTimeout)
-  ),
-  fetch(url, options)
-]);
+const _timeoutWithoutAbort = (url, options = {}) => {
+  let timeoutId = 0;
+  return Promise.race([
+    new Promise((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error("Request Timeout")),
+        ((!("timeout" in options)) || options.timeout < 1) ? defaultTimeout : options.timeout);
+    }),
+    new Promise((resolve, reject) => {
+      fetch(url, options)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+        .finally(() => timeoutId && clearTimeout(timeoutId));
+    })
+  ]);
+};
 
 // In case of higher OCD, can use the approach with AbortController Syntax
 // "See AbortController page on MDN"
@@ -34,18 +44,12 @@ const _timeoutWithAbort = (url, options = {}) =>
     let timeoutId = 0;
 
     if ("timeout" in options && options.timeout > 0) {
-      timeoutId = setTimeout(() => {
-        controller.abort();
-      }, options.timeout);
+      timeoutId = setTimeout(() => controller.abort(), options.timeout);
     }
     fetchPromise
-      .then((res) => {
-        timeoutId && clearTimeout(timeoutId);
-        resolve(res);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+      .then(res => resolve(res))
+      .catch(err => reject(err))
+      .finally(() => timeoutId && clearTimeout(timeoutId));
   });
 
 module.exports = _timeoutWithAbort;
