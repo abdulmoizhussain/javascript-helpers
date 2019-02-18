@@ -29,7 +29,6 @@ const _timeoutWithoutAbort = (url, options = {}) => {
   ]);
 };
 
-// In case of higher OCD, one can use the approach with AbortController Syntax
 // "See AbortController page on MDN"
 // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
 // "...This "polyfill" doesn't actually close the connection when the request is aborted, but it will call .catch() with err.name == 'AbortError' instead of .then()..."
