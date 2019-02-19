@@ -1,5 +1,5 @@
 // Just in case it is required to save location coordinates in solidity.
-// To save some variables, we can combine coordinates in a single 'uint' of 22 length (i.e. a BigInteger number) and can convert it back to lattitude and longitude.
+// To save some data structure, we can combine coordinates in a single 'uint' of 22 length (i.e. a BigInteger) and can parse it back to lattitude and longitude.
 
 function coordsToUint(_lat = 0, _lng = 0) {
   const lat = addPointZero(String(_lat));
