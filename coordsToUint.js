@@ -17,7 +17,7 @@ function coordsToUint(_lat = 0, _lng = 0) {
   const isLngNegative = (lng[0] === "-");
 
   const uLAT = isLatNegative ? lat.substr(1) : lat; // unsigned lattitude
-  const uLNG = isLngNegative ? lng.substr(1) : lng; // unsigne longitude
+  const uLNG = isLngNegative ? lng.substr(1) : lng; // unsigned longitude
 
   let integerPartLAT = uLAT.substr(0, uLAT.indexOf("."));
   let integerPartLNG = uLNG.substr(0, uLNG.indexOf("."));
