@@ -9,7 +9,7 @@
 const fetch = require("node-fetch");
 const AbortController = require("abort-controller");
 
-// Clearing a timeoutId is necessary coz Node does not leave terminal until a setTimeout() is called or cleared.
+// Clearing a timeoutId is necessary because Node does not leave terminal until a setTimeout() is called or cleared.
 
 // Can NOT exclude timeout in this approach. Some timeout must be given or default will be provided.
 const defaultTimeout = 6000;
