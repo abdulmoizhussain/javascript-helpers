@@ -22,8 +22,8 @@ const _timeoutWithoutAbort = (url, options = {}) => {
     }),
     new Promise((resolve, reject) => {
       fetch(url, options)
-        .then(res => resolve(res))
-        .catch(err => reject(err))
+        .then(resolve)
+        .catch(reject)
         .finally(() => timeoutId && clearTimeout(timeoutId));
     })
   ]);
@@ -46,8 +46,8 @@ const _timeoutWithAbort = (url, options = {}) =>
       timeoutId = setTimeout(() => controller.abort(), options.timeout);
     }
     fetchPromise
-      .then(res => resolve(res))
-      .catch(err => reject(err))
+      .then(resolve)
+      .catch(reject)
       .finally(() => timeoutId && clearTimeout(timeoutId));
   });
 
