@@ -3,7 +3,6 @@
 // https://stackoverflow.com/questions/46946380/fetch-api-request-timeout
 // https://github.com/github/fetch/issues/175
 // https://gist.github.com/davej/728b20518632d97eef1e5a13bf0d05c7
-
 // https://modernweb.com/45-useful-javascript-tips-tricks-and-best-practices/
 
 const fetch = require("node-fetch");
