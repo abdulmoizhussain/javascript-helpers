@@ -7,30 +7,46 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>RGB V/V Hex</title>
   <style>
-    .parent-box,
-    .parent-box>* {
-      text-align: center;
-      padding-left: auto;
-      padding-right: auto;
-    }
-    #rgbBox, #hexBox {
+    #rgbBox,
+    #hexBox {
       position: absolute;
-      min-width: 100px;
+      width: 100px;
+    }
+
+    .box {
+      text-align: center;
+    }
+
+    .parent-box {
+      min-width: 250px;
+      height: 30px;
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      background-color: #e9eaeb;
+      padding: 5px;
     }
   </style>
 </head>
 
 <body>
-  <div id="rgbBox" class="box">&nbsp;</div>
-  <div class="parent-box">
-    <label for="rgb">RGB(&nbsp;<input type="text" id="rgb" placeholder="255 255 255 / 255,255,255"
-        onkeyup="rgbToHex()" />&nbsp;)</label>
-    &nbsp;&nbsp;&nbsp;<span id="hexSTR"></span><span class="box"></span>
+  <div class="box">
+    <div id="rgbBox" class="box">&nbsp;</div>
+    <div class="parent-box">
+      <label for="rgb">RGB(&nbsp;
+        <input type="text" id="rgb" placeholder="255 255 255 / 255, 255, 255" onkeyup="rgbToHex()" size="25" />&nbsp;)
+      </label>
+      &nbsp;&nbsp;&nbsp;<span id="hexSTR"></span><span class="box"></span>
+    </div>
+
   </div>
-  <div id="hexBox">&nbsp;</div>
-  <div class="parent-box">
-    <label for="hex">#&nbsp;<input type="text" id="hex" placeholder="0099ff" onkeyup="hexToRGB()" /></label>
-    &nbsp;&nbsp;&nbsp;<span id="rgbSTR"></span><span class="box"></span>
+  <!-- <br> -->
+  <div class="box">
+    <div id="hexBox">&nbsp;</div>
+    <div class="parent-box">
+      <label for="hex">#&nbsp;<input type="text" id="hex" placeholder="0099ff" onkeyup="hexToRGB()" /></label>
+      &nbsp;&nbsp;&nbsp;<span id="rgbSTR"></span><span class="box"></span>
+    </div>
   </div>
 
   <script>
