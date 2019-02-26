@@ -1,4 +1,5 @@
 // https://stackoverflow.com/questions/2631001/test-for-existence-of-nested-javascript-object-key
+
 function checkNested(obj = {}, props = "") {
   const propsArray = props.split('.');
   for (let i = 0; i < propsArray.length; i++) {
