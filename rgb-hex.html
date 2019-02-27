@@ -2,118 +2,128 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>RGB V/V Hex</title>
-  <style>
-    #rgbBox,
-    #hexBox {
-      position: absolute;
-      width: 100px;
-    }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>RGB V/V Hex</title>
+	<style>
+		#rgbBox,
+		#hexBox {
+			position: absolute;
+			top: 20px;
+			width: 100px;
+			height: 40px;
+			/* +10px of box padding, added in height */
+		}
 
-    .box {
-      text-align: center;
-    }
+		.parent-box {
+			text-align: center;
+			position: relative;
+		}
 
-    .parent-box {
-      min-width: 250px;
-      height: 30px;
-      display: inline-block;
-      margin-top: 20px;
-      text-align: center;
-      background-color: #e9eaeb;
-      padding: 5px;
-    }
-  </style>
+		.box {
+			min-width: 250px;
+			height: 30px;
+			display: inline-block;
+			margin-top: 20px;
+			text-align: center;
+			background-color: #e9eaeb;
+			padding: 5px;
+		}
+	</style>
 </head>
 
 <body>
-  <div class="box">
-    <div id="rgbBox" class="box">&nbsp;</div>
-    <div class="parent-box">
-      <label for="rgb">RGB(&nbsp;
-        <input type="text" id="rgb" placeholder="255 255 255 / 255, 255, 255" onkeyup="rgbToHex()" size="25" />&nbsp;)
-      </label>
-      &nbsp;&nbsp;&nbsp;<span id="hexSTR"></span><span class="box"></span>
-    </div>
+	<div class="parent-box">
+		<div id="rgbBox">&nbsp;</div>
+		<div class="box">
+			<label for="rgb">
+				RGB(&nbsp;
+				<input type="text" id="rgb" placeholder="255 255 255 / 255, 255, 255" onkeyup="rgbToHex()" size="25" />
+				&nbsp;)
+			</label>
+			&nbsp;&nbsp;&nbsp;
+			<span id="hexSTR"></span>
+		</div>
+	</div>
 
-  </div>
-  <!-- <br> -->
-  <div class="box">
-    <div id="hexBox">&nbsp;</div>
-    <div class="parent-box">
-      <label for="hex">#&nbsp;<input type="text" id="hex" placeholder="0099ff" onkeyup="hexToRGB()" /></label>
-      &nbsp;&nbsp;&nbsp;<span id="rgbSTR"></span><span class="box"></span>
-    </div>
-  </div>
+	<div class="parent-box">
+		<div id="hexBox">&nbsp;</div>
+		<div class="box">
+			<label for="hex">
+				#&nbsp;
+				<input type="text" id="hex" placeholder="0099ff" onkeyup="hexToRGB()" />
+			</label>
+			&nbsp;&nbsp;&nbsp;
+			<span id="rgbSTR"></span>
+		</div>
+	</div>
 
-  <script>
-    function rgbToHex() {
-      // rgb(0 0 0)
-      let rgb = "";
-      rgb = document.getElementById("rgb").value.replace(/  /g, " ").substr(0, 13); // with negative sign
-      let hexValue = 'invalid RGB value: ' + rgb;
-      // if (!rgb.length || rgb.length < 5 || (rgb.match(/ /g) || []).length !== 2) {
-      if (!rgb.length || rgb.length < 5) {
-        return setHexa(hexValue);
-      }
-      const rgbSplit = rgb.split(" ");
-      const r = rgbSplit[0];
-      const g = rgbSplit[1];
-      const b = rgbSplit[2];
-      hexValue = "#" + toHexa(r);
-      hexValue += toHexa(g);
-      hexValue += toHexa(b);
-      setHexa(hexValue);
-    }
-    function setHexa(hexStr = "") {
-      document.getElementById("hexSTR").innerHTML = hexStr;
-      document.getElementById("rgbBox").setAttribute("style", "background-color: " + hexStr);
-    }
-    function setRGB(rgbStr = "") {
-      document.getElementById("rgbSTR").innerHTML = rgbStr;
-      document.getElementById("hexBox").setAttribute("style", "background-color: " + rgbStr);
-    }
+	<script>
+		function rgbToHex() {
+			// rgb(0 0 0)
+			let rgb = "";
+			rgb = document.getElementById("rgb").value.replace(/  /g, " ").substr(0, 13); // with negative sign
+			let hexValue = 'invalid RGB value: ' + rgb;
+			// if (!rgb.length || rgb.length < 5 || (rgb.match(/ /g) || []).length !== 2) {
+			if (!rgb.length || rgb.length < 5) {
+				return setHexa(hexValue);
+			}
+			const rgbSplit = rgb.split(" ");
+			const r = rgbSplit[0];
+			const g = rgbSplit[1];
+			const b = rgbSplit[2];
+			hexValue = "#" + toHexa(r);
+			hexValue += toHexa(g);
+			hexValue += toHexa(b);
+			setHexa(hexValue);
+		}
+		function setHexa(hexStr = "") {
+			document.getElementById("hexSTR").innerHTML = hexStr;
+			document.getElementById("rgbBox").setAttribute("style", "background-color: " + hexStr);
+		}
 
-    function toHexa(deciVal = "") {
-      let deciInINT = parseInt(deciVal, 10);
-      if (isNaN(deciInINT)) {
-        return "00";
-      }
-      let hexaSTR = deciInINT.toString(16);
-      if (hexaSTR.length === 1) {
-        return "0" + hexaSTR;
-      }
-      return hexaSTR;
-    }
+		function hexToRGB() {
+			let hexa = "";
+			hexa = document.getElementById("hex").value.replace(/ /g, "");
+			let rgbValue = "Invalid Hex Value: " + hexa;
+			if (!hexa.length || hexa.length < 6) {
+				return setRGB(rgbValue);
+			}
+			if (hexa.indexOf("#") > -1) {
+				hexa = hexa.substr(1);
+			}
+			hexa = hexa.substr(0, 6);
+			const r = hexa.substr(0, 2);
+			const g = hexa.substr(2, 2);
+			const b = hexa.substr(4, 2);
+			hexa = "rgb(";
+			hexa += toDeci(r) + ", ";
+			hexa += toDeci(g) + ", ";
+			hexa += toDeci(b) + ")";
+			setRGB(hexa);
+		}
+		function setRGB(rgbStr = "") {
+			document.getElementById("rgbSTR").innerHTML = rgbStr;
+			document.getElementById("hexBox").setAttribute("style", "background-color: " + rgbStr);
+		}
 
-    function hexToRGB() {
-      let hexa = "";
-      hexa = document.getElementById("hex").value.replace(/ /g, "");
-      let rgbValue = "Invalid Hex Value: " + hexa;
-      if (!hexa.length || hexa.length < 6) {
-        return setRGB(rgbValue);
-      }
-      if (hexa.indexOf("#") > -1) {
-        hexa = hexa.substr(1);
-      }
-      hexa = hexa.substr(0, 6);
-      const r = hexa.substr(0, 2);
-      const g = hexa.substr(2, 2);
-      const b = hexa.substr(4, 2);
-      hexa = "rgb(";
-      hexa += toDeci(r) + ", ";
-      hexa += toDeci(g) + ", ";
-      hexa += toDeci(b) + ")";
-      setRGB(hexa);
-    }
+		function toDeci(hexVal = "0") {
+			return parseInt(hexVal, 16);
+		}
 
-    function toDeci(hexVal = "0") {
-      return parseInt(hexVal, 16);
-    }
-  </script>
+		function toHexa(deciVal = "") {
+			let deciInINT = parseInt(deciVal, 10);
+			if (isNaN(deciInINT)) {
+				return "00";
+			}
+			let hexaSTR = deciInINT.toString(16);
+			if (hexaSTR.length === 1) {
+				return "0" + hexaSTR;
+			}
+			return hexaSTR;
+		}
+	</script>
 </body>
 
 </html>
