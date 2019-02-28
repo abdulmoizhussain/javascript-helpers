@@ -9,9 +9,7 @@ function coordsToUint(_lat = 0, _lng = 0) {
     !lat || !lng ||
     lat.length < 3 || lng.length < 3 ||
     lat.indexOf(".") === -1 || lng.indexOf(".") === -1
-  ) {
-    return "";
-  }
+  ) return "";
 
   const isLatNegative = (lat[0] === "-");
   const isLngNegative = (lng[0] === "-");
