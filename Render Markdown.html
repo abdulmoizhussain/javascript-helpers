@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MD -> HTML</title>
+</head>
+<body>
+  <input type="file" onchange="toHTML()" id="source">
+  <div id="htmlDiv"></div>
+  <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+  <script>
+    function toHTML() {
+    const reader = new FileReader();
+    reader.onload = function (file) {
+      const content = file.target.result;
+      const htmlContent = new showdown.Converter().makeHtml(content);
+      document.querySelector('#htmlDiv').innerHTML = htmlContent;
+    }
+    reader.readAsText(document.querySelector("#source").files[0]);
+    }
+
+  </script>
+</body>
+</html>
