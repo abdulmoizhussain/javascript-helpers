@@ -15,9 +15,7 @@
     function toHTML() {
     const reader = new FileReader();
     reader.onload = function (file) {
-      const content = file.target.result;
-      const htmlContent = new showdown.Converter().makeHtml(content);
-      document.querySelector('#htmlDiv').innerHTML = htmlContent;
+      document.querySelector('#htmlDiv').innerHTML = new showdown.Converter().makeHtml(file.target.result);
     }
     reader.readAsText(document.querySelector("#source").files[0]);
     }
