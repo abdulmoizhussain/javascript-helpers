@@ -5,28 +5,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>MD -> HTML</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>MD &lt;--&gt; HTML</title>
+  <style>
+    #dropContainer {
+      width: 960px;
+      height: 768px;
+      margin-top: 40px;
+      margin: auto;
+      text-align: center;
+      vertical-align: text;
+      border: black 1px solid;
+
+    }
+  </style>
 </head>
 
 <body>
-  <div class="input-group">
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="source" aria-describedby="inputGroupFileAddon01" onchange="toHTML()">
-      <label class="custom-file-label" for="source">Drop Markdown File here</label>
-    </div>
+  <div class="" id="dropContainer">
+    <input type="file" class="" id="source">
+    <h4>Drop MD file here</h4>
   </div>
   <div id="htmlDiv"></div>
   <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
   <script>
-    function toHTML() {
-      const reader = new FileReader();
-      reader.onload = function (file) {
-        document.querySelector('#htmlDiv').innerHTML = new showdown.Converter().makeHtml(file.target.result);
-      }
-      reader.readAsText(document.querySelector("#source").files[0]);
-    }
+    (function () {
+      const dropContainer = document.querySelector('#dropContainer');
+      dropContainer.ondragover = dropContainer.ondragenter = function (evt) {
+        evt.preventDefault();
+      };
+      dropContainer.ondrop = function (evt) {
+        evt.preventDefault();
+        const reader = new FileReader();
+        reader.onload = function (file) {
+          // document.querySelector('#htmlDiv').innerHTML = new showdown.Converter().makeHtml(file.target.result);
+          document.body.innerHTML = new showdown.Converter().makeHtml(file.target.result);
+          console.log('document: ', document);
+        }
+        reader.readAsText(evt.dataTransfer.files[0]);
+      };
+    })();
   </script>
 </body>
 
