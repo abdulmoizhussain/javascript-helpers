@@ -1,4 +1,4 @@
-function checkMultiples(source='', delim='') {
+function checkMultiples(source='', delim='\n') {
 	const lines = source.split(delim);
 	for (var i=0; i< lines.length; i++) {
 		for(var j=0; j< lines.length; j++) {
