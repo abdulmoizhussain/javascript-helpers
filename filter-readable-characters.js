@@ -8,4 +8,10 @@ function filterReadableCharacters(INPUT="") {
 		}
 	}
 	return FILTERED;
+	
+	// OR
+	// return INPUT.replace(/[^\x00-\x7E]/g, "");
+
+	// OR
+	// return INPUT.replace(/[^ -~/g, "");
 }
