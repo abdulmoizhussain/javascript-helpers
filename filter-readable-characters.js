@@ -1,6 +1,11 @@
 
-function filterReadableCharacters(input = "") {
-	return input.split("")
-  .filter(c => { const code = c.charCodeAt(); return code > 31 && code < 127; })
-  .join("");
+function filterReadableCharacters(INPUT="") {
+	let FILTERED = "";
+	for(let i = 0; i < INPUT.length; i++) {
+		const CODE = INPUT.charCodeAt(i);
+		if (CODE > 31 && CODE < 127) {
+			FILTERED += INPUT[i];
+		}
+	}
+	return FILTERED;
 }
