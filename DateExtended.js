@@ -187,71 +187,71 @@ class DateExtended extends Date {
    * @param {String} stringToFormat 
    */
   format(stringToFormat) {
-    if (stringToFormat.indexOf('yyyy') > -1) {
+    if (/\byyyy\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\byyyy\b/g, this.getFullYear());
     }
-    if (stringToFormat.indexOf('yyy') > -1) {
+    if (/\byyy\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\byyy\b/g, this.getFullYear());
     }
 
-    if (stringToFormat.indexOf('HH') > -1) {
+    if (/\bHH\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bHH\b/g, NumberHelper.toString(this.getHours()));
     }
-    if (stringToFormat.indexOf('H') > -1) {
+    if (/\bH\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bH\b/g, this.getHours());
     }
 
-    if (stringToFormat.indexOf('hh') > -1) {
+    if (/\bhh\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bhh\b/g, NumberHelper.toString(this.getHoursOf12HourFormat()));
     }
-    if (stringToFormat.indexOf('h') > -1) {
+    if (/\bh\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bh\b/g, this.getHoursOf12HourFormat());
     }
 
-    if (stringToFormat.indexOf('mm') > -1) {
+    if (/\bmm\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bmm\b/g, NumberHelper.toString(this.getMinutes()));
     }
-    if (stringToFormat.indexOf('m') > -1) {
+    if (/\bm\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bm\b/g, this.getMinutes());
     }
 
-    if (stringToFormat.indexOf('ss') > -1) {
+    if (/\bss\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bss\b/g, NumberHelper.toString(this.getSeconds()));
     }
-    if (stringToFormat.indexOf('s') > -1) {
+    if (/\bs\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bs\b/g, this.getSeconds());
     }
 
-    if (stringToFormat.indexOf('dddd') > -1) {
+    if (/\bdddd\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bdddd\b/g, fullWeekDayNames[this.getDay()]);
     }
-    if (stringToFormat.indexOf('ddd') > -1) {
+    if (/\bddd\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bddd\b/g, shortWeekDayNames[this.getDay()]);
     }
-    if (stringToFormat.indexOf('dd') > -1) {
+    if (/\bdd\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bdd\b/g, NumberHelper.toString(this.getDate()));
     }
-    if (stringToFormat.indexOf('d') > -1) {
+    if (/\bd\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bd\b/g, this.getDate());
     }
 
-    if (stringToFormat.indexOf('MMMM') > -1) {
+    if (/\bMMMM\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bMMMM\b/g, fullMonthNames[this.getMonth()]);
     }
-    if (stringToFormat.indexOf('MMM') > -1) {
+    if (/\bMMM\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bMMM\b/g, shortMonthNames[this.getMonth()]);
     }
-    if (stringToFormat.indexOf('MM') > -1) {
+    if (/\bMM\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bMM\b/g, NumberHelper.toString(this.getMonth() + 1));
     }
-    if (stringToFormat.indexOf('M') > -1) {
+    if (/\bM\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bM\b/g, this.getMonth() + 1);
     }
 
-    if (stringToFormat.indexOf('tt') > -1) {
+    if (/\btt\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\btt\b/g, this.getAmOrPmInFull());
     }
-    if (stringToFormat.indexOf('t') > -1) {
+    if (/\bt\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bt\b/g, this.getAmOrPmInShort());
     }
 
