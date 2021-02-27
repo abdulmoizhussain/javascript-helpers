@@ -257,17 +257,63 @@ class DateExtended extends Date {
 
     return stringToFormat;
   }
+
+  /**
+   * @param {Number} year
+   * @param {Number} month - provide zero based month number (0-11)
+   */
+  getDaysOfAMonth(year, month) {
+    // source: https://stackoverflow.com/a/222439
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  /**
+   * Adds/Subtracts given number of months in this instance and returns new instance.
+   * @param {Number} monthsToAdd - Positive or Negative number of months.
+   */
+  addMonths(monthsToAdd) {
+    // source: https://stackoverflow.com/a/11500017
+    const thisYear = this.getFullYear();
+    const thisMonth = this.getMonth();
+
+    const resultantYear = Math.floor(((thisYear * 12) + thisMonth + monthsToAdd) / 12);
+
+    // source: https://stackoverflow.com/a/43794682
+    if (resultantYear > 275760 || resultantYear < -271821) {
+      throw "Invalid Date: Out of Range";
+    }
+
+    const resultantMonth = ((thisYear * 12) + thisMonth + monthsToAdd) % 12;
+
+    let thisDate = this.getDate();
+    if (thisDate > 28) {
+      const resultantDate = this.getDaysOfAMonth(resultantYear, resultantMonth);
+      if (resultantDate < thisDate) {
+        thisDate = resultantDate;
+      }
+    }
+
+    return new DateExtended(
+      resultantYear,
+      resultantMonth,
+      thisDate,
+      this.getHours(),
+      this.getMinutes(),
+      this.getSeconds(),
+      this.getMilliseconds()
+    );
+  }
 }
 
 // console.log(new DateExtended(1000).totalMilliseconds());
-console.log(new DateExtended("2020-10-31T00:12:12").format('d dd ddd dddd h hh H HH m mm s ss M MM MMM MMMM t tt yyy yyyy'));
+// console.log(new DateExtended("2020-10-31T00:12:12").format('d dd ddd dddd h hh H HH m mm s ss M MM MMM MMMM t tt yyy yyyy'));
 // console.log(new DateExtended("2020-10-01T13:12:12").format('d dd ddd dddd h hh H HH m mm s ss M MM MMM MMMM t tt yyy yyyy'));
-console.log(new DateExtended("2020-10-31T00:12:12").format('dd-mm-yyy'));
-console.log(new DateExtended("2020-10-31T00:12:12").format('dd/mm/yyy'));
-console.log(new DateExtended("2020-10-31T00:12:12").format('dd:mm:yyy'));
-console.log(new DateExtended("2020-10-31T00:12:12").format('dd!mm!yyy'));
-console.log(new DateExtended("2020-10-31T00:12:12").format("dd'mm'yyy"));
-console.log(new DateExtended("2020-10-31T00:12:12").format("dd`mm`yyy"));
+// console.log(new DateExtended("2020-10-31T00:12:12").format('dd-mm-yyy'));
+// console.log(new DateExtended("2020-10-31T00:12:12").format('dd/mm/yyy'));
+// console.log(new DateExtended("2020-10-31T00:12:12").format('dd:mm:yyy'));
+// console.log(new DateExtended("2020-10-31T00:12:12").format('dd!mm!yyy'));
+// console.log(new DateExtended("2020-10-31T00:12:12").format("dd'mm'yyy"));
+// console.log(new DateExtended("2020-10-31T00:12:12").format("dd`mm`yyy"));
 
 // this case wont work because an underscore is a word-character, we need to separate them with a non-word character.
 // console.log(new DateExtended("2020-10-31T00:12:12").format('dd_mm_yyy'));
@@ -279,3 +325,6 @@ console.log(new DateExtended("2020-10-31T00:12:12").format("dd`mm`yyy"));
 // console.log(new DateExtended().addMinutes(-1));
 // console.log(new DateExtended().addSeconds(1));
 // console.log(new DateExtended().addSeconds(-1));
+
+// console.log(new Date(2020, 1, 31, 00, 12, 12).addMonths(0).format("dd-MM-MMM-yyy T HH mm ss"));
+// console.log(new DateExtended(2020, 0, 29, 00, 12, 12).addMonths(1).format("dd-(MM-MMM)-yyyy"));
