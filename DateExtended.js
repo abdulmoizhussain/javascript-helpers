@@ -1,14 +1,11 @@
 class NumberHelper {
   /**
-   * Prefixes a zero in the given number is if it is in the range: 0-9
-   * @param {Number} value 
+   * Prefixes a zero in the given number if it is in the range: 0-9
+   * @param {Number} number 
    */
-  static toString(value) {
-    const valueStr = value.toString();
-    if (valueStr.length === 1) {
-      return "0" + valueStr;
-    }
-    return valueStr;
+  static prefixZero(number) {
+    const numberStr = number.toString();
+    return numberStr.length === 1 ? "0" + numberStr : numberStr;
   }
 }
 const shortWeekDayNames = [
@@ -57,6 +54,10 @@ const fullMonthNames = [
   "November",
   "December",
 ];
+
+// TODO:
+// find a unique name for npmjs.com
+// like: datetime-extended, new-date-extended
 class DateExtended extends Date {
   // class private variable:
   // #ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
@@ -82,7 +83,83 @@ class DateExtended extends Date {
   totalDays() { return this.totalHours() / 24; }
 
   /**
-   * Adds/Subtracts given number of days in this instance and returns new instance.
+   * @param {Number} year
+   * @param {Number} month - zero based month number (0-11)
+   */
+  getDaysInMonth(year, month) {
+    // source: https://stackoverflow.com/a/222439
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  /**
+   * Adds/Subtracts given number of years in this instance and returns a new instance.
+   * @param {Number} years - Positive or Negative number of years.
+   */
+  addYears(years) {
+    const resultantYear = this.getFullYear() + years;
+
+    // source: https://stackoverflow.com/a/43794682
+    if (resultantYear > 275760 || resultantYear < -271821) {
+      throw "Invalid Date: Out of Range";
+    }
+
+    const thisMonth = this.getMonth();
+    let thisDate = this.getDate();
+
+    if (thisMonth === 1 /* if its Feb */ && thisDate === 29) {
+      thisDate = this.getDaysInMonth(resultantYear, thisMonth);
+    }
+
+    return new DateExtended(
+      resultantYear,
+      thisMonth,
+      thisDate,
+      this.getHours(),
+      this.getMinutes(),
+      this.getSeconds(),
+      this.getMilliseconds()
+    );
+  }
+
+  /**
+   * Adds/Subtracts given number of months in this instance and returns a new instance.
+   * @param {Number} months - Positive or Negative number of months.
+   */
+  addMonths(months) {
+    // source: https://stackoverflow.com/a/11500017
+    const thisYear = this.getFullYear();
+    const thisMonth = this.getMonth();
+
+    const resultantYear = Math.floor(((thisYear * 12) + thisMonth + months) / 12);
+
+    // source: https://stackoverflow.com/a/43794682
+    if (resultantYear > 275760 || resultantYear < -271821) {
+      throw "Invalid Date: Out of Range";
+    }
+
+    const resultantMonth = ((thisYear * 12) + thisMonth + months) % 12;
+
+    let thisDate = this.getDate();
+    if (thisDate > 28) {
+      const resultantDate = this.getDaysInMonth(resultantYear, resultantMonth);
+      if (resultantDate < thisDate) {
+        thisDate = resultantDate;
+      }
+    }
+
+    return new DateExtended(
+      resultantYear,
+      resultantMonth,
+      thisDate,
+      this.getHours(),
+      this.getMinutes(),
+      this.getSeconds(),
+      this.getMilliseconds()
+    );
+  }
+
+  /**
+   * Adds/Subtracts given number of days in this instance and returns a new instance.
    * @param {Number} days - Positive or Negative number of days.
    */
   addDays(days) {
@@ -90,7 +167,7 @@ class DateExtended extends Date {
   }
 
   /**
-   * Adds/Subtracts given number of hours in this instance and returns new instance.
+   * Adds/Subtracts given number of hours in this instance and returns a new instance.
    * @param {Number} hours - Positive or Negative number of hours.
    */
   addHours(hours) {
@@ -98,7 +175,7 @@ class DateExtended extends Date {
   }
 
   /**
-   * Adds/Subtracts given number of minutes in this instance and returns new instance.
+   * Adds/Subtracts given number of minutes in this instance and returns a new instance.
    * @param {Number} minutes - Positive or Negative number of minutes.
    */
   addMinutes(minutes) {
@@ -106,11 +183,19 @@ class DateExtended extends Date {
   }
 
   /**
-   * Adds/Subtracts given number of seconds in this instance and returns new instance.
+   * Adds/Subtracts given number of seconds in this instance and returns a new instance.
    * @param {Number} seconds - Positive or Negative number of seconds.
    */
   addSeconds(seconds) {
     return new DateExtended(this.getTime() + (seconds * 1000));
+  }
+
+  /**
+   * Adds/Subtracts given number of milliseconds in this instance and returns a new instance.
+   * @param {Number} milliseconds - Positive or Negative number of milliseconds.
+   */
+  addMilliseconds(milliseconds) {
+    return new DateExtended(this.getTime() + milliseconds);
   }
 
   getHoursOf12HourFormat() {
@@ -195,28 +280,28 @@ class DateExtended extends Date {
     }
 
     if (/\bHH\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bHH\b/g, NumberHelper.toString(this.getHours()));
+      stringToFormat = stringToFormat.replace(/\bHH\b/g, NumberHelper.prefixZero(this.getHours()));
     }
     if (/\bH\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bH\b/g, this.getHours());
     }
 
     if (/\bhh\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bhh\b/g, NumberHelper.toString(this.getHoursOf12HourFormat()));
+      stringToFormat = stringToFormat.replace(/\bhh\b/g, NumberHelper.prefixZero(this.getHoursOf12HourFormat()));
     }
     if (/\bh\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bh\b/g, this.getHoursOf12HourFormat());
     }
 
     if (/\bmm\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bmm\b/g, NumberHelper.toString(this.getMinutes()));
+      stringToFormat = stringToFormat.replace(/\bmm\b/g, NumberHelper.prefixZero(this.getMinutes()));
     }
     if (/\bm\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bm\b/g, this.getMinutes());
     }
 
     if (/\bss\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bss\b/g, NumberHelper.toString(this.getSeconds()));
+      stringToFormat = stringToFormat.replace(/\bss\b/g, NumberHelper.prefixZero(this.getSeconds()));
     }
     if (/\bs\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bs\b/g, this.getSeconds());
@@ -229,7 +314,7 @@ class DateExtended extends Date {
       stringToFormat = stringToFormat.replace(/\bddd\b/g, shortWeekDayNames[this.getDay()]);
     }
     if (/\bdd\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bdd\b/g, NumberHelper.toString(this.getDate()));
+      stringToFormat = stringToFormat.replace(/\bdd\b/g, NumberHelper.prefixZero(this.getDate()));
     }
     if (/\bd\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bd\b/g, this.getDate());
@@ -242,7 +327,7 @@ class DateExtended extends Date {
       stringToFormat = stringToFormat.replace(/\bMMM\b/g, shortMonthNames[this.getMonth()]);
     }
     if (/\bMM\b/g.test(stringToFormat)) {
-      stringToFormat = stringToFormat.replace(/\bMM\b/g, NumberHelper.toString(this.getMonth() + 1));
+      stringToFormat = stringToFormat.replace(/\bMM\b/g, NumberHelper.prefixZero(this.getMonth() + 1));
     }
     if (/\bM\b/g.test(stringToFormat)) {
       stringToFormat = stringToFormat.replace(/\bM\b/g, this.getMonth() + 1);
@@ -256,52 +341,6 @@ class DateExtended extends Date {
     }
 
     return stringToFormat;
-  }
-
-  /**
-   * @param {Number} year
-   * @param {Number} month - provide zero based month number (0-11)
-   */
-  getDaysOfAMonth(year, month) {
-    // source: https://stackoverflow.com/a/222439
-    return new Date(year, month + 1, 0).getDate();
-  }
-
-  /**
-   * Adds/Subtracts given number of months in this instance and returns new instance.
-   * @param {Number} monthsToAdd - Positive or Negative number of months.
-   */
-  addMonths(monthsToAdd) {
-    // source: https://stackoverflow.com/a/11500017
-    const thisYear = this.getFullYear();
-    const thisMonth = this.getMonth();
-
-    const resultantYear = Math.floor(((thisYear * 12) + thisMonth + monthsToAdd) / 12);
-
-    // source: https://stackoverflow.com/a/43794682
-    if (resultantYear > 275760 || resultantYear < -271821) {
-      throw "Invalid Date: Out of Range";
-    }
-
-    const resultantMonth = ((thisYear * 12) + thisMonth + monthsToAdd) % 12;
-
-    let thisDate = this.getDate();
-    if (thisDate > 28) {
-      const resultantDate = this.getDaysOfAMonth(resultantYear, resultantMonth);
-      if (resultantDate < thisDate) {
-        thisDate = resultantDate;
-      }
-    }
-
-    return new DateExtended(
-      resultantYear,
-      resultantMonth,
-      thisDate,
-      this.getHours(),
-      this.getMinutes(),
-      this.getSeconds(),
-      this.getMilliseconds()
-    );
   }
 }
 
@@ -328,3 +367,4 @@ class DateExtended extends Date {
 
 // console.log(new Date(2020, 1, 31, 00, 12, 12).addMonths(0).format("dd-MM-MMM-yyy T HH mm ss"));
 // console.log(new DateExtended(2020, 0, 29, 00, 12, 12).addMonths(1).format("dd-(MM-MMM)-yyyy"));
+// console.log(new DateExtended(2020, 1, 29, 00, 12, 12).addYears(1).format("dd-MMM-yyyy"));
