@@ -58,6 +58,8 @@ const fullMonthNames = [
 // TODO:
 // find a unique name for npmjs.com
 // like: datetime-extended, new-date-extended
+// how to minify code.
+// write tests.
 class DateExtended extends Date {
   // class private variable:
   // #ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
@@ -76,15 +78,35 @@ class DateExtended extends Date {
     this.ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
   }
 
+  /**
+   * @returns {Number} Total number of passed milliseconds up-till now, expressed in whole and fractional number.
+   */
   totalMilliseconds() { return new Date().getTime() - this.getTime(); }
+  
+  /**
+   * @returns {Number} Total number of passed seconds up-till now, expressed in whole and fractional number.
+   */
   totalSeconds() { return this.totalMilliseconds() / 1000; }
+  
+  /**
+   * @returns {Number} Total number of passed minutes up-till now, expressed in whole and fractional number.
+   */
   totalMinutes() { return this.totalSeconds() / 60; }
+  
+  /**
+   * @returns {Number} Total number of passed hours up-till now, expressed in whole and fractional number.
+   */
   totalHours() { return this.totalMinutes() / 60; }
+  
+  /**
+   * @returns {Number} Total number of passed days up-till now, expressed in whole and fractional number.
+   */
   totalDays() { return this.totalHours() / 24; }
 
   /**
-   * @param {Number} year
-   * @param {Number} month - zero based month number (0-11)
+   * @param {Number} year - Full year for the month.
+   * @param {Number} month - Zero based month number (0-11)
+   * @returns {Number} Total number of days of the month.
    */
   getDaysInMonth(year, month) {
     // source: https://stackoverflow.com/a/222439
@@ -94,6 +116,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of years in this instance and returns a new instance.
    * @param {Number} years - Positive or Negative number of years.
+   * @returns {DateExtended}
    */
   addYears(years) {
     const resultantYear = this.getFullYear() + years;
@@ -124,6 +147,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of months in this instance and returns a new instance.
    * @param {Number} months - Positive or Negative number of months.
+   * @returns {DateExtended}
    */
   addMonths(months) {
     // source: https://stackoverflow.com/a/11500017
@@ -161,6 +185,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of days in this instance and returns a new instance.
    * @param {Number} days - Positive or Negative number of days.
+   * @returns {DateExtended}
    */
   addDays(days) {
     return new DateExtended(this.getTime() + (days * this.ONE_DAY_IN_MILLISECONDS));
@@ -169,6 +194,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of hours in this instance and returns a new instance.
    * @param {Number} hours - Positive or Negative number of hours.
+   * @returns {DateExtended}
    */
   addHours(hours) {
     return new DateExtended(this.getTime() + (hours * this.ONE_HOUR_IN_MILLISECONDS));
@@ -177,6 +203,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of minutes in this instance and returns a new instance.
    * @param {Number} minutes - Positive or Negative number of minutes.
+   * @returns {DateExtended}
    */
   addMinutes(minutes) {
     return new DateExtended(this.getTime() + (minutes * this.ONE_MINUTE_IN_MILLISECONDS));
@@ -185,6 +212,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of seconds in this instance and returns a new instance.
    * @param {Number} seconds - Positive or Negative number of seconds.
+   * @returns {DateExtended}
    */
   addSeconds(seconds) {
     return new DateExtended(this.getTime() + (seconds * 1000));
@@ -193,6 +221,7 @@ class DateExtended extends Date {
   /**
    * Adds/Subtracts given number of milliseconds in this instance and returns a new instance.
    * @param {Number} milliseconds - Positive or Negative number of milliseconds.
+   * @returns {DateExtended}
    */
   addMilliseconds(milliseconds) {
     return new DateExtended(this.getTime() + milliseconds);
@@ -269,7 +298,8 @@ class DateExtended extends Date {
    * 
    * Source: https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
    * 
-   * @param {String} stringToFormat 
+   * @param {String} stringToFormat
+   * @returns {String} Formatted date string.
    */
   format(stringToFormat) {
     if (/\byyyy\b/g.test(stringToFormat)) {
