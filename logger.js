@@ -63,3 +63,12 @@ logger.add(new winston.transports.Console({ format: createFormat("worker") }));
 module.exports = {
   simpleLogger: logger
 };
+
+/*
+// usage
+
+const { simpleLogger: logger } = require("./logger");
+logger.info("simple log.");
+logger.info("formattable log. 1st: {}, 2nd: {}, 3rd: {}", "arg1", 100, { someProp: "itsvalue" });
+logger.info("formattable log. 1st: {}, 2nd: {}, 3rd: {}", "arg1", -1, false);
+*/
