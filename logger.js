@@ -12,12 +12,16 @@ const pyformat = require("pyformat");
 
 const stringifyArgs = (args) => args.map(x => safeStringify(x));
 
-const createFormat = (loggerLabel = "worker") => winston.format.combine(
-  winston.format.label({ label: loggerLabel }),
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-  // winston.format.prettyPrint(),
-  // winston.format.align(),
-  winston.format.printf(({ message, timestamp, label, level, ...meta }) => {
+const createFormat = (loggerLabel = "worker", colorize = false) => {
+  const formats = [];
+
+  if (colorize) formats.push(winston.format.colorize()); // does not work if we push it at the end after printf.
+
+  formats.push(winston.format.label({ label: loggerLabel }));
+  formats.push(winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }));
+  // formats.push(winston.format.prettyPrint());
+  // formats.push(winston.format.align());
+  formats.push(winston.format.printf(({ message, timestamp, label, level, ...meta }) => {
     const args = meta[Symbol.for("splat")];
 
     let msg;
@@ -29,8 +33,10 @@ const createFormat = (loggerLabel = "worker") => winston.format.combine(
     }
 
     return `${timestamp} ${label} [${level}]: ${msg}`;
-  })
-);
+  }));
+
+  return winston.format.combine(...formats);
+};
 
 const logger = winston.createLogger({
   level: 'info',
@@ -57,7 +63,7 @@ const logger = winston.createLogger({
 // If we're not in production then log to the `console` with the format:
 // if (process.env.NODE_ENV !== 'production') {
 // if (config.logging.consoleAppender.enabled) {
-logger.add(new winston.transports.Console({ format: createFormat("worker") }));
+logger.add(new winston.transports.Console({ format: createFormat("worker", true) }));
 // }
 
 module.exports = {
